@@ -63,6 +63,12 @@ harmony-research/
 - **[docs/design/music-therapy-research-design.md](docs/design/music-therapy-research-design.md)** — Full 24-month architecture
 - **[docs/plans/2026-10-17-music-therapy-phase1-plan.md](docs/plans/2026-10-17-music-therapy-phase1-plan.md)** — Phase 1 implementation tasks
 
+## Research Foundation
+
+This project is grounded in **psychoacoustics**—the study of how the human auditory system perceives and responds to sound. Understanding psychoacoustics is key to explaining *why* certain music properties (rhythm, pitch, timbre) improve motor control and mood in Parkinson's patients.
+
+See [docs/research-foundation/psychoacoustics.md](docs/research-foundation/psychoacoustics.md) for the theoretical foundation.
+
 ## Research Scope
 
 **Music + Parkinson's outcomes:**

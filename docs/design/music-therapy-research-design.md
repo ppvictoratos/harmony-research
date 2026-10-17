@@ -91,6 +91,14 @@ Build an **evidence aggregator + experiment generator** that discovers musical e
 
 ## Research Scope & Focus
 
+### Theoretical Foundation: Psychoacoustics
+
+This research is grounded in **psychoacoustics**—the study of how the human auditory system perceives and responds to sound. Music's therapeutic effects on Parkinson's motor control operate through auditory-motor coupling: rhythmic music provides external temporal cues that engage motor pathways through the cerebellum and premotor cortex, effectively bypassing the damaged basal ganglia circuits that cause bradykinesia and rigidity.
+
+The psychoacoustic properties we track—rhythm/tempo, pitch/tonality, timbre, and complexity—each have different effects on auditory processing and motor engagement. By understanding these mechanisms, we can identify which specific musical elements work best for which Parkinson's symptoms.
+
+**See:** [../research-foundation/psychoacoustics.md](../research-foundation/psychoacoustics.md) for detailed theory and research questions this informs.
+
 ### What We're Studying (Broad)
 
 **Music + Parkinson's motor outcomes:**

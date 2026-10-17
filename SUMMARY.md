@@ -8,6 +8,11 @@
 
 ## What We've Built So Far
 
+### 0. Research Foundation ✅
+**Psychoacoustics** — Foundational theory explaining how sound perception drives motor and emotional responses in Parkinson's patients. Guides which musical properties (rhythm, pitch, timbre, tonality) to research and why.
+
+📄 See: `docs/research-foundation/psychoacoustics.md`
+
 ### 1. Architectural Design ✅
 Complete 24-month system design covering:
 - **Web Research Platform** (TypeScript/React) — evidence aggregator, gap finder, experiment designer
