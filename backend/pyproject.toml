@@ -1,0 +1,27 @@
+[project]
+name = "harmony-research-backend"
+version = "0.1.0"
+description = "Evidence aggregator for music therapy + Parkinson's research"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.104.1",
+    "sqlalchemy==2.0.23",
+    "psycopg2-binary==2.9.9",
+    "alembic==1.13.1",
+    "requests==2.31.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "python-dotenv==1.0.0",
+    "uvicorn==0.24.0",
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "httpx==0.25.2",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
