@@ -14,6 +14,14 @@ if [ ! -d web/node_modules ]; then
   (cd web && npm install --no-audit --no-fund)
 fi
 
+for port in 8000 3000; do
+  if lsof -nP -iTCP:$port -sTCP:LISTEN >/dev/null 2>&1; then
+    echo "Port $port is already in use (another copy running?). Stop it and try again:"
+    lsof -nP -iTCP:$port -sTCP:LISTEN
+    exit 1
+  fi
+done
+
 trap 'kill 0' EXIT
 (cd backend && ./venv/bin/uvicorn app.main:app --port 8000 --reload) &
 (cd web && npm run dev) &

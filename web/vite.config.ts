@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+    strictPort: true, // the API only allows CORS from :3000 and :5173
   },
   test: {
     environment: "jsdom",
