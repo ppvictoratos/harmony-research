@@ -14,6 +14,9 @@ web/node_modules/
 web/dist/
 web/.env.local
 web/.DS_Store
+web/test-results/
+web/playwright-report/
+web/playwright/.cache/
 
 # General
 .DS_Store

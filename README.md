@@ -60,9 +60,14 @@ Open http://localhost:3000. API docs are at http://localhost:8000/docs.
 ## Tests
 
 ```bash
-cd backend && ./venv/bin/python -m pytest
-cd web && npm test
+cd backend && ./venv/bin/python -m pytest   # API, ingestion, relevance, study logic
+cd web && npm test                           # React components (Vitest)
+cd web && npm run test:e2e                   # full app in Chrome (Playwright)
 ```
+
+The Playwright suite starts its own API and UI on ports 8001 and 3100 against a throwaway
+`<your database>_e2e` Postgres database that is wiped and re-seeded each run, so it never touches
+your data and can run alongside `dev.sh`. It uses your installed Google Chrome, at desktop and phone sizes.
 
 ## Project structure
 

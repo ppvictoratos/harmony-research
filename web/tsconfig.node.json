@@ -6,7 +6,8 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true,
-    "outDir": "node_modules/.tmp"
+    "outDir": "node_modules/.tmp",
+    "types": ["node"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "playwright.config.ts"]
 }
