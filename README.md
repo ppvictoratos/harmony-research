@@ -26,8 +26,6 @@ Search titles, authors, abstracts and outcomes; filter by source and year; open 
 - Log mood and focus (1–10) before and after each session, with notes
 - See the average change per condition, with every session plotted and small-sample caveats
 
-![Study builder](docs/screenshots/study.png)
-
 > The study builder tracks how music affects how you feel. It isn't a medical device or treatment.
 
 ## Run it locally
