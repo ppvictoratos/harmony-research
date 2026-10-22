@@ -9,6 +9,8 @@ const SOURCES = [
   { value: "", label: "All sources" },
   { value: "pubmed", label: "PubMed papers" },
   { value: "clinicaltrials", label: "Clinical trials" },
+  { value: "preprint", label: "Preprints" },
+  { value: "europepmc", label: "Europe PMC" },
 ];
 
 function toYear(value: string): number | undefined {

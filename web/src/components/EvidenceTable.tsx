@@ -10,11 +10,23 @@ interface EvidenceTableProps {
 const SOURCE_LABEL: Record<string, string> = {
   pubmed: "PubMed",
   clinicaltrials: "Trial",
+  preprint: "Preprint",
+  europepmc: "Europe PMC",
+};
+
+const SOURCE_SITE: Record<string, string> = {
+  pubmed: "PubMed",
+  clinicaltrials: "ClinicalTrials.gov",
+  preprint: "Europe PMC",
+  europepmc: "Europe PMC",
 };
 
 function Details({ ev }: { ev: Evidence }) {
   return (
     <div className="details">
+      {ev.source === "preprint" && (
+        <p className="muted">Preprint: not yet peer reviewed.</p>
+      )}
       {ev.abstract ? (
         <p className="abstract">{ev.abstract}</p>
       ) : (
@@ -42,7 +54,7 @@ function Details({ ev }: { ev: Evidence }) {
       </dl>
       {ev.url && (
         <a href={ev.url} target="_blank" rel="noopener noreferrer">
-          Open on {ev.source === "pubmed" ? "PubMed" : "ClinicalTrials.gov"} ↗
+          Open on {SOURCE_SITE[ev.source] ?? ev.source} ↗
         </a>
       )}
     </div>

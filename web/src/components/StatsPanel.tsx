@@ -22,12 +22,18 @@ export function StatsPanel({ stats, onYearClick }: StatsPanelProps) {
           <span className="label">studies</span>
         </div>
         <div className="tile">
-          <span className="value">{(stats.by_source.pubmed ?? 0).toLocaleString()}</span>
-          <span className="label">PubMed papers</span>
+          <span className="value">
+            {((stats.by_source.pubmed ?? 0) + (stats.by_source.europepmc ?? 0)).toLocaleString()}
+          </span>
+          <span className="label">papers</span>
         </div>
         <div className="tile">
           <span className="value">{(stats.by_source.clinicaltrials ?? 0).toLocaleString()}</span>
           <span className="label">clinical trials</span>
+        </div>
+        <div className="tile">
+          <span className="value">{(stats.by_source.preprint ?? 0).toLocaleString()}</span>
+          <span className="label">preprints</span>
         </div>
       </div>
       {years.length > 0 && (
