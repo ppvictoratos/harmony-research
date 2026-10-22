@@ -1,0 +1,34 @@
+import logging
+from typing import Dict, List
+
+from sqlalchemy.orm import Session
+
+from app.models import Evidence
+
+logger = logging.getLogger(__name__)
+
+
+def ingest_evidence(studies: List[Dict], db: Session) -> int:
+    """Ingest a list of studies into the database, skip duplicates"""
+    ids = {s["study_id"] for s in studies if s.get("study_id")}
+    seen = {
+        row.study_id
+        for row in db.query(Evidence.study_id).filter(Evidence.study_id.in_(ids))
+    } if ids else set()
+
+    count = 0
+    for study in studies:
+        study_id = study.get("study_id")
+        if not study_id or not study.get("title"):
+            logger.warning(f"Skipping study missing id or title: {study_id}")
+            continue
+        if study_id in seen:
+            logger.debug(f"Skipping duplicate: {study_id}")
+            continue
+        db.add(Evidence.from_dict(study))
+        seen.add(study_id)
+        count += 1
+
+    db.commit()
+    logger.info(f"Ingested {count} new evidence records")
+    return count

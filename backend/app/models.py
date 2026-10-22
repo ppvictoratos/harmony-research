@@ -17,6 +17,7 @@ class Evidence(Base):
     study_id = Column(String(50), unique=True, nullable=False)
     title = Column(String(500), nullable=False)
     authors = Column(Text)
+    abstract = Column(Text)
     year = Column(Integer)
     intervention_type = Column(String(100))  # e.g., "music_alone", "music_pt", "music_ot"
     intervention_details = Column(Text)  # JSON string: {"tempo": 120, "key": "major", "rhythm": "4/4"}
@@ -32,3 +33,7 @@ class Evidence(Base):
         Index("ix_evidence_source_year", "source", "year"),
         Index("ix_evidence_intervention", "intervention_type"),
     )
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Evidence":
+        return cls(**{k: v for k, v in data.items() if k in cls.__table__.columns.keys()})
