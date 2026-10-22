@@ -128,6 +128,61 @@ header {
   gap: 16px;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  flex-shrink: 0;
+  --logo-copper: #d08a5c;
+  --logo-ink: #d9d4cc;
+}
+
+:root[data-theme="light"] .logo {
+  --logo-copper: #b8693d;
+  --logo-ink: #6f6a63;
+}
+
+.logo path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.logo .logo-brain {
+  stroke: var(--logo-copper);
+  stroke-width: 4;
+}
+
+.logo .logo-fold {
+  stroke: var(--logo-copper);
+  stroke-width: 3;
+  opacity: 0.5;
+}
+
+.logo .logo-clef {
+  stroke: var(--logo-ink);
+  stroke-width: 4;
+}
+
+.logo .logo-bass {
+  stroke: var(--logo-ink);
+  stroke-width: 3;
+  opacity: 0.85;
+}
+
+.logo .logo-dot {
+  fill: var(--logo-ink);
+}
+
+.logo .logo-swoosh {
+  fill: var(--logo-copper);
+  stroke: none;
+  opacity: 0.75;
+}
+
 .theme-toggle {
   flex-shrink: 0;
   background: var(--glass);

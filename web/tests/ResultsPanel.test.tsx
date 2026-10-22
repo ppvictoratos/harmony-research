@@ -42,3 +42,26 @@ describe("ResultsPanel", () => {
     expect(screen.getByText("-1.0")).toBeInTheDocument();
   });
 });
+
+describe("ResultsPanel measure switch", () => {
+  it("switches between mood and focus", async () => {
+    const { default: userEvent } = await import("@testing-library/user-event");
+    render(
+      <ResultsPanel
+        results={{
+          study_id: 1,
+          completed_sessions: 2,
+          total_sessions: 6,
+          conditions: [
+            base({ condition: "70 BPM", completed: 1, mood_change_avg: 2, mood_changes: [2], focus_change_avg: 0, focus_changes: [0] }),
+            base({ condition: "90 BPM", completed: 1, mood_change_avg: 0, mood_changes: [0], focus_change_avg: 3, focus_changes: [3] }),
+          ],
+        }}
+      />,
+    );
+    expect(screen.getByText("70 BPM", { selector: "strong" })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Focus" }));
+    expect(screen.getByText("90 BPM", { selector: "strong" })).toBeInTheDocument();
+    expect(screen.getByText(/biggest average focus lift/)).toBeInTheDocument();
+  });
+});

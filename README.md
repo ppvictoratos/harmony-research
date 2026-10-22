@@ -1,129 +1,95 @@
-# Harmony Research: Music Therapy + Parkinson's Evidence Platform
+<p align="center">
+  <img src="docs/brand/logo.svg" alt="Harmony Research logo" width="160">
+</p>
 
-A research platform to discover musical elements (chord progressions, rhythms, note sequences) that improve Parkinson's outcomes through systematic evidence aggregation, gap analysis, and experiment design.
+<h1 align="center">Harmony Research</h1>
 
-## Phase 1: Evidence Aggregator
+<p align="center">
+  An open evidence base on music, rhythm and the brain, plus tools to design and run your own music study.
+</p>
 
-This phase builds a web-based research tool that:
-- Pulls public research from PubMed and ClinicalTrials.gov
-- Structures findings into a searchable evidence database
-- Provides a web UI for researchers to browse, search, and filter evidence
-- Tracks intervention types (music + PT, music alone, etc.) and outcomes (gait, motor control, mood, etc.)
+![Evidence browser](docs/screenshots/evidence.png)
 
-## Getting Started
+## What it does
 
-**See [SUMMARY.md](SUMMARY.md) for quickstart instructions.**
+**Evidence browser.** Pulls public research into one searchable place:
 
-### Prerequisites
-- Python 3.11+
-- PostgreSQL 14+
-- Node.js 18+
+- **PubMed** papers on music, singing, metronome and rhythmic auditory cueing in Parkinson's disease
+- **ClinicalTrials.gov** trials, with enrollment and primary outcomes
+- **Europe PMC**, which adds preprints (clearly labelled as not peer reviewed), PubMed Central-only papers and theses
 
-### Backend
+Search titles, authors, abstracts and outcomes; filter by source and year; open any row to read the abstract.
+
+**Study builder.** Design an n-of-1 study: one person comparing a few conditions (an instrument, a tempo, a playlist, silence) over randomized daily sessions.
+
+- Block-randomized schedule, so every condition appears once per round and none clusters on good or bad weeks
+- Log mood and focus (1–10) before and after each session, with notes
+- See the average change per condition, with every session plotted and small-sample caveats
+
+![Study builder](docs/screenshots/study.png)
+
+> The study builder tracks how music affects how you feel. It isn't a medical device or treatment.
+
+## Run it locally
+
+Prerequisites: Python 3.11+, PostgreSQL 14+, Node.js 18+.
+
 ```bash
+# 1. Database
+createdb harmony_db
+cp .env.example backend/.env   # set DATABASE_URL, e.g. postgresql://<you>@localhost:5432/harmony_db
+
+# 2. Backend
 cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -e .
-alembic upgrade head
-uvicorn app.main:app --reload
+python3 -m venv venv
+./venv/bin/pip install -e .
+./venv/bin/alembic upgrade head
+
+# 3. Pull evidence (a few minutes, all public APIs)
+PYTHONPATH=. ./venv/bin/python scripts/pull_pubmed.py
+PYTHONPATH=. ./venv/bin/python scripts/pull_clinicaltrials.py
+PYTHONPATH=. ./venv/bin/python scripts/pull_europepmc.py
+
+# 4. Optional: example studies with made-up sessions to explore
+PYTHONPATH=. ./venv/bin/python scripts/seed_example_studies.py
+
+# 5. Start the API (:8000) and web UI (:3000) together
+cd .. && ./dev.sh
 ```
 
-### Web UI
+Open http://localhost:3000. API docs are at http://localhost:8000/docs.
+
+## Tests
+
 ```bash
-cd web
-npm install
-npm run dev
+cd backend && ./venv/bin/python -m pytest
+cd web && npm test
 ```
 
-Visit http://localhost:3000 to browse evidence.
-
-## Project Structure
+## Project structure
 
 ```
-harmony-research/
-├── docs/
-│   ├── design/music-therapy-research-design.md
-│   └── plans/2026-10-17-music-therapy-phase1-plan.md
-├── backend/
-│   ├── app/
-│   ├── tests/
-│   └── pyproject.toml
-├── web/
-│   ├── src/
-│   └── package.json
-├── SUMMARY.md
-├── README.md
-└── LICENSE
+backend/   FastAPI + SQLAlchemy + Alembic (PostgreSQL)
+  app/integrations/   PubMed, ClinicalTrials.gov, Europe PMC clients
+  app/api/            /api/evidence and /api/studies routes
+  scripts/            data pulls and example studies
+web/       React + TypeScript + Vite
+docs/      design, plans, research foundation, brand, screenshots
 ```
 
-## Key Documents
+## Roadmap
 
-- **[SUMMARY.md](SUMMARY.md)** — Project overview and quickstart
-- **[docs/design/music-therapy-research-design.md](docs/design/music-therapy-research-design.md)** — Full 24-month architecture
-- **[docs/plans/2026-10-17-music-therapy-phase1-plan.md](docs/plans/2026-10-17-music-therapy-phase1-plan.md)** — Phase 1 implementation tasks
+- **Phase 1, evidence aggregator** ✅ PubMed, ClinicalTrials.gov, Europe PMC, web UI
+- **Study builder (early Phase 3)** ✅ personal n-of-1 studies
+- **Phase 2, gap finder:** extract tempo, instrument and outcome details from abstracts; map what's under-studied
+- **Toward clinical use:** see [docs/plans/2026-10-22-clinician-platform-plan.md](docs/plans/2026-10-22-clinician-platform-plan.md)
 
-## Research Foundation
-
-This project is grounded in **psychoacoustics**—the study of how the human auditory system perceives and responds to sound. Understanding psychoacoustics is key to explaining *why* certain music properties (rhythm, pitch, timbre) improve motor control and mood in Parkinson's patients.
-
-See [docs/research-foundation/psychoacoustics.md](docs/research-foundation/psychoacoustics.md) for the theoretical foundation.
-
-## Research Scope
-
-**Music + Parkinson's outcomes:**
-- Gait (cadence, speed, freezing)
-- Fine motor control (dexterity, tremor)
-- Posture and balance
-- Speech
-
-**Musical elements:**
-- Rhythm & tempo
-- Tonality (major/minor keys, chord progressions)
-- Timbre & instrumentation
-- Duration and structure
-
-**Data sources:**
-- Public research only (PubMed, ClinicalTrials.gov, preprints)
-- No patient data collection in Phase 1
-
-## Timeline
-
-- **Phase 1 (Months 1–4):** Evidence aggregator MVP ← *You are here*
-- **Phase 2 (Months 4–8):** Gap finder (AI-driven analysis)
-- **Phase 3 (Months 8–12):** Experiment designer + iOS app
-- **Phase 4 (Months 12–24):** Real data collection, analysis, publication
-
-## Tech Stack
-
-| Component | Stack |
-|-----------|-------|
-| Backend | FastAPI, SQLAlchemy, PostgreSQL |
-| Web UI | React, TypeScript, Vite |
-| APIs | PubMed E-utilities, ClinicalTrials.gov API |
-| Testing | pytest, vitest |
-| Deployment | GitHub + local/cloud compute |
+Background: [design](docs/design/music-therapy-research-design.md) · [phase 1 plan](docs/plans/2026-10-17-music-therapy-phase1-plan.md) · [psychoacoustics foundation](docs/research-foundation/psychoacoustics.md)
 
 ## Contributing
 
-This project welcomes:
-- Bug reports and feature requests (open an issue)
-- Pull requests (especially from music therapists, Parkinson's researchers)
-- Research collaboration
-
-See [docs/plans/2026-10-17-music-therapy-phase1-plan.md](docs/plans/2026-10-17-music-therapy-phase1-plan.md) for implementation details.
+Music therapists, researchers and developers are very welcome. Open an issue or a pull request.
 
 ## License
 
-MIT — See [LICENSE](LICENSE)
-
-## Contact & Feedback
-
-- Questions? Check [SUMMARY.md](SUMMARY.md) or the design documents
-- Feedback? Open an issue
-
----
-
-**Status:** Phase 1 Planning  
-**Last Updated:** 2026-10-17  
-**Next Review:** Month 4
+MIT. See [LICENSE](LICENSE).

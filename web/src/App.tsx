@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { EvidencePage } from "./components/EvidencePage";
+import { Logo } from "./components/Logo";
 import { StudiesPage } from "./components/studies/StudiesPage";
 import { StudyPage } from "./components/studies/StudyPage";
 import { useHashRoute } from "./hooks/useHashRoute";
@@ -18,9 +19,12 @@ function App() {
   return (
     <div className="app">
       <header>
-        <div>
-          <h1>Harmony Research</h1>
-          <p className="subtitle">Evidence on music, rhythm and the brain, and tools to run your own study</p>
+        <div className="brand">
+          <Logo />
+          <div>
+            <h1>Harmony Research</h1>
+            <p className="subtitle">Evidence on music, rhythm and the brain, and tools to run your own study</p>
+          </div>
         </div>
         <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label="Toggle light and dark theme">
           {theme === "dark" ? "☀︎ Light" : "☾ Dark"}
