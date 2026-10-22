@@ -3,7 +3,8 @@
 Every example's title starts with "Example:" and its ratings are invented.
 
 Usage (from backend/):
-    PYTHONPATH=. ./venv/bin/python scripts/seed_example_studies.py          # add examples (replaces old ones)
+    PYTHONPATH=. ./venv/bin/python scripts/seed_example_studies.py          # add any missing examples
+    PYTHONPATH=. ./venv/bin/python scripts/seed_example_studies.py --reset  # replace all examples with fresh copies
     PYTHONPATH=. ./venv/bin/python scripts/seed_example_studies.py --remove # delete examples only
 """
 import argparse
@@ -46,6 +47,20 @@ EXAMPLES = [
         },
     },
     {
+        "title": f"{PREFIX} Listening for mood: upbeat, calm, or my own recordings",
+        "question": "When I just listen (not play), which lifts my mood most: an upbeat playlist, a calm playlist, or recordings of my own music?",
+        "conditions": {"Upbeat playlist": 1.4, "Calm playlist": 0.9, "My own recordings": 1.8},
+        "minutes": 20,
+        "per_condition": 6,
+        "completed": 9,
+        "measure": "mood",
+        "notes": {
+            "My own recordings": ["Heard an old demo, wanted to finish it", "Proud of the bridge section"],
+            "Upbeat playlist": ["Walked around while listening"],
+            "Calm playlist": ["Lay down with headphones"],
+        },
+    },
+    {
         "title": f"{PREFIX} Singing vs hand drum before bed",
         "question": "Does singing or playing a hand drum for 15 minutes before bed leave me in a better mood?",
         "conditions": {"Singing": 1.6, "Hand drum": 1.1},
@@ -72,7 +87,11 @@ def remove_examples(db) -> int:
 
 def add_examples(db) -> None:
     rng = random.Random(42)
+    existing = {title for (title,) in db.query(Study.title).filter(Study.title.startswith(PREFIX))}
     for spec in EXAMPLES:
+        if spec["title"] in existing:
+            print(f"Keeping existing {spec['title']!r}")
+            continue
         conditions = list(spec["conditions"])
         total = len(conditions) * spec["per_condition"]
         start = date.today() - timedelta(days=spec["completed"])
@@ -107,13 +126,15 @@ def add_examples(db) -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--remove", action="store_true", help="only delete existing examples")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--reset", action="store_true", help="replace all examples with fresh copies")
+    group.add_argument("--remove", action="store_true", help="only delete existing examples")
     args = parser.parse_args()
 
     db = SessionLocal()
     try:
-        removed = remove_examples(db)
-        if removed:
+        if args.reset or args.remove:
+            removed = remove_examples(db)
             print(f"Removed {removed} existing example studies")
         if not args.remove:
             add_examples(db)

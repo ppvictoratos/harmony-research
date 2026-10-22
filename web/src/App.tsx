@@ -20,7 +20,7 @@ function App() {
     <div className="app">
       <header>
         <div className="brand">
-          <Logo />
+          <Logo size={96} />
           <div>
             <h1>Harmony Research</h1>
             <p className="subtitle">Evidence on music, rhythm and the brain, and tools to run your own study</p>
